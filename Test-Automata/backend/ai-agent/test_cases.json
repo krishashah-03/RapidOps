@@ -1,0 +1,38 @@
+[
+    {
+        "description": "Verify that the search input field is clickable.",
+        "type": "input_field",
+        "action": "click",
+        "xpath": "//*[@id=\"react-application\"]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/HEADER[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/FORM[1]/DIV[1]/DIV[1]/DIV[1]/INPUT[1]",
+        "expected": "no_error"
+    },
+    {
+        "description": "Verify that user can type text to search input",
+        "type": "input_field",
+        "action": "send_keys",
+        "xpath": "//*[@id=\"react-application\"]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/HEADER[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/FORM[1]/DIV[1]/DIV[1]/DIV[1]/INPUT[1]",
+        "input": "Mumbai",
+        "expected": "Mumbai"
+    },
+    {
+        "description": "Verify the functionality of the 'Stays' button in the search bar.",
+        "type": "button",
+        "action": "click",
+        "xpath": "//*[@id=\"search-block-tab-STAYS\"]",
+        "expected": "no_error"
+    },
+    {
+        "description": "Verify the functionality of the 'Experiences' button in the search bar.",
+        "type": "button",
+        "action": "click",
+        "xpath": "//*[@id=\"search-block-tab-EXPERIENCES\"]",
+        "expected": "no_error"
+    },
+    {
+        "description": "Verify clear the text of input to search input",
+        "type": "input_field",
+        "action": "clear",
+        "xpath": "//*[@id=\"react-application\"]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/HEADER[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/FORM[1]/DIV[1]/DIV[1]/DIV[1]/INPUT[1]",
+        "expected": ""
+    }
+]

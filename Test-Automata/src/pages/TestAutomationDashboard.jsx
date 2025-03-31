@@ -1,54 +1,309 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { AlertCircle, CheckCircle, Clock, FileText, AlertTriangle, ArrowUpRight, FileOutput, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, FileText, AlertTriangle, ArrowUpRight, FileOutput, X , Upload  } from 'lucide-react';
 // import { useState } from "react";
 import axios from "axios";
+
+// const results = [
+//     {
+//         "test": "Verify that the search input field is clickable.",
+//         "status": "FAIL",
+//         "error": "Message: element not interactable\n  (Session info: chrome=134.0.6998.178)\nStacktrace:\n\tGetHandleVerifier [0x00007FF61CB74C25+3179557]\n\t(No symbol) [0x00007FF61C7D88A0]\n\t(No symbol) [0x00007FF61C668FFC]\n\t(No symbol) [0x00007FF61C6C0EA4]\n\t(No symbol) [0x00007FF61C6B2A24]\n\t(No symbol) [0x00007FF61C6E7C2A]\n\t(No symbol) [0x00007FF61C6B22D6]\n\t(No symbol) [0x00007FF61C6E7E40]\n\t(No symbol) [0x00007FF61C7102F3]\n\t(No symbol) [0x00007FF61C6E7A03]\n\t(No symbol) [0x00007FF61C6B06D0]\n\t(No symbol) [0x00007FF61C6B1983]\n\tGetHandleVerifier [0x00007FF61CBD67CD+3579853]\n\tGetHandleVerifier [0x00007FF61CBED1D2+3672530]\n\tGetHandleVerifier [0x00007FF61CBE2153+3627347]\n\tGetHandleVerifier [0x00007FF61C94092A+868650]\n\t(No symbol) [0x00007FF61C7E2FFF]\n\t(No symbol) [0x00007FF61C7DF4A4]\n\t(No symbol) [0x00007FF61C7DF646]\n\t(No symbol) [0x00007FF61C7CEAA9]\n\tBaseThreadInitThunk [0x00007FF8A481E8D7+23]\n\tRtlUserThreadStart [0x00007FF8A695BF6C+44]\n",
+//         "expected": "no_error",
+//         "type": "input_fields"
+//     },
+//     {
+//         "test": "Verify that the search input field accepts text input (e.g., 'Mumbai').",
+//         "status": "PASS",
+//         "expected": "no_error",
+//         "type": "buttons"
+//     },
+//     {
+//         "test": "Verify that the search input field works by searching for 'Goa'.",
+//         "status": "PASS",
+//         "expected": "no_error",
+//         "type": "buttons"
+//     },
+//     {
+//         "test": "Verify if clicking the search button opens the location suggestions with the input 'Delhi'.",
+//         "status": "FAIL",
+//         "error": "Message: element not interactable\n  (Session info: chrome=134.0.6998.178)\nStacktrace:\n\tGetHandleVerifier [0x00007FF61CB74C25+3179557]\n\t(No symbol) [0x00007FF61C7D88A0]\n\t(No symbol) [0x00007FF61C668FFC]\n\t(No symbol) [0x00007FF61C6C0EA4]\n\t(No symbol) [0x00007FF61C6B2A24]\n\t(No symbol) [0x00007FF61C6E7C2A]\n\t(No symbol) [0x00007FF61C6B22D6]\n\t(No symbol) [0x00007FF61C6E7E40]\n\t(No symbol) [0x00007FF61C7102F3]\n\t(No symbol) [0x00007FF61C6E7A03]\n\t(No symbol) [0x00007FF61C6B06D0]\n\t(No symbol) [0x00007FF61C6B1983]\n\tGetHandleVerifier [0x00007FF61CBD67CD+3579853]\n\tGetHandleVerifier [0x00007FF61CBED1D2+3672530]\n\tGetHandleVerifier [0x00007FF61CBE2153+3627347]\n\tGetHandleVerifier [0x00007FF61C94092A+868650]\n\t(No symbol) [0x00007FF61C7E2FFF]\n\t(No symbol) [0x00007FF61C7DF4A4]\n\t(No symbol) [0x00007FF61C7DF646]\n\t(No symbol) [0x00007FF61C7CEAA9]\n\tBaseThreadInitThunk [0x00007FF8A481E8D7+23]\n\tRtlUserThreadStart [0x00007FF8A695BF6C+44]\n",
+//         "expected": "no_error",
+//         "type": "input_fields"
+//     }
+// ]
+
+// const tests = [
+//     {
+//       "description": "Verify that the user can click on the search bar and the cursor should appear",
+//       "type": "input_fields",
+//       "action": "click",
+//       "xpath": "//*[@id=\"react-application\"]/DIV[1]/DIV[1]/DIV[1]/DIV[1]/DIV[3]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/HEADER[1]/DIV[1]/DIV[2]/DIV[2]/DIV[1]/DIV[1]/DIV[1]/FORM[1]/DIV[1]/DIV[1]/DIV[1]/INPUT[1]",
+//       "expected": "no_error",
+//       "timeout": 10
+//     },
+//     {
+//       "description": "Verify that the user can click on the 'Stays' tab",
+//       "type": "buttons",
+//       "action": "click",
+//       "xpath": "//*[@id=\"search-block-tab-STAYS\"]",
+//       "expected": "no_error",
+//       "timeout": 10
+//     },
+//     {
+//       "description": "Verify that the user can click on the 'Experiences' tab",
+//       "type": "buttons",
+//       "action": "click",
+//       "xpath": "//*[@id=\"search-block-tab-EXPERIENCES\"]",
+//       "expected": "no_error",
+//       "timeout": 10
+//     },
+//     {
+//       "description": "Verify user can enter text in location input field",
+//       "type": "input_fields",
+//       "action": "input",
+//       "xpath": "//*[@id=\"bigsearch-query-location-input\"]",
+//       "input": "Mumbai",
+//       "expected": "Mumbai",
+//       "timeout": 10
+//     },
+//     {
+//       "description": "Verify user can click on search button",
+//       "type": "buttons",
+//       "action": "click",
+//       "xpath": "//*[@id=\"search-tabpanel\"]/DIV[1]/DIV[5]/DIV[2]/DIV[2]/BUTTON[1]",
+//       "expected": "no_error",
+//       "timeout": 20
+//     }
+//   ]
 
 const TestAutomationDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [showGeneratedTests, setShowGeneratedTests] = useState(false);
-
+  const [fileName, setFileName] = useState("");
   const [requirements, setRequirements] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [showTagline, setShowTagline] = useState(true);
+
+  const [testResults, setTestResults] = useState({ passed: 0, failed: 0, total: 0 });
+  const [pieData, setPieData] = useState([]);
+  const [errors, setErrors] = useState([]);
+  const [results , setResults] = useState([]);
+  const [error, setError] = useState(null);
+// const [testedTestCases,setTestedCases] = useState([])
+  const [loading, setLoading] = useState(false);
+const [tests,setTests] = useState([]);
+
+const [generatedTestCases,setGeneratedTestCases]= useState([])
+
+
+  useEffect(() => {
+    console.log(showGeneratedTests)
+    if (!showGeneratedTests) return;
+    console.log("hello")
+
+    setLoading(true);
+    let attempts = 0;
+    const interval = setInterval(() => {
+      fetch("http://localhost:8080/test_cases")
+        .then((response) => {
+          if (!response.ok) throw new Error("File not found");
+          return response.json();
+        })
+        .then((json) => {
+          setTests(json);
+          console.log(tests);
+          setError(null);
+          setLoading(false);
+          clearInterval(interval);
+        })
+        .catch((err) => {
+          if (attempts >= 1) {
+            setError("File not found after multiple attempts.");
+            setLoading(false);
+            clearInterval(interval);
+          }
+        });
+
+      attempts++;
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [showGeneratedTests]);
+//   useEffect(() => {
+//     if (!showGeneratedTests) return; // Fetch only when showGenerated is true
+
+//     fetch("/data.json")
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("File not found");
+//         }
+
+//         console.log(response.json())
+//         return response.json();
+        
+//       })
+//       .then((json) => setResults(json))
+//       .catch((err) => setError(err.message));
+//    }, [showGeneratedTests]); // Runs when showGenerated changes
+
+useEffect(() => {
+    if (!results || results.length === 0) return;
+
+    const passed = results.filter(test => test.status === "PASS").length;
+    const failed = results.filter(test => test.status === "FAIL").length;
+    const total = results.length;
+
+    setTestResults({ passed, failed, total });
+
+    setPieData([
+      { name: "Passed", value: passed, color: "#50C878" },
+      { name: "Failed", value: failed, color: "#FF5733" }
+    ]);
+
+    setErrors(
+      results
+        .filter(test => test.status === "FAIL")
+        .map(test => ({
+          component: test.type,
+          description: test.test,
+          action:test.action,
+          severity: "High"
+        }))
+    );
+
+
+
+  }, [results]);
+
+   
+    const testTestCases = (tests) => {
+        return tests.map((test, index) => ({
+          id: `TC-${String(index + 1).padStart(3, "0")}`,
+          description: test.test,
+          status: "High",
+          priority: "High",
+          status:test.status,
+          type: test.type,
+        //   action : test.action
+        }));
+      };
+      
+    
+    
+    const testedTestCases = testTestCases(results)
+
 
 
   
-  // Test data
-  const testResults = {
-    passed: 18,
-    failed: 4,
-    total: 22
+
+  const handleRunTestCases = () => {
+    setLoading(true);
+    let attempts = 0;
+
+    const interval = setInterval(() => {
+      fetch("http://localhost:8080/results")
+        .then((response) => {
+          if (!response.ok) throw new Error("File not found");
+          return response.json();
+        })
+        .then((data) => {
+          setResults(data);
+          setLoading(false);
+          clearInterval(interval); // Stop checking after success
+          setShowTagline(false)
+        })
+        .catch((err) => {
+          if (attempts >= 1) { // Stop retrying after 2.5 sec (5 * 500ms)
+            setLoading(false);
+            clearInterval(interval);
+            setShowTagline(false)
+          }
+        });
+
+      attempts++;
+    }, 500); // Retry every 500ms
   };
+
+//   const testTestCases = (tests) => {
+//     return tests.map((test, index) => ({
+//       id: TC-${String(index + 1).padStart(3, "0")},
+//       description: test.test,
+//       status: "High",
+//       priority: "High",
+//       status:test.status,
+//       type: test.type,
+//     //   action : test.action
+//     }));
+//   };
   
-  // Changed colors to specified values: green #50C878 and red #FF5733
-  const pieData = [
-    { name: 'Passed', value: testResults.passed, color: '#50C878' },
-    { name: 'Failed', value: testResults.failed, color: '#FF5733' }
-  ];
+
+//   const testedTestCases = testTestCases(results);
+
+
+  // Test data
+//   const testResults = {
+//     passed: 18,
+//     failed: 4,
+//     total: 22
+//   };
   
-  const testCases = [
-    { id: 'TC-001', description: 'Verify user login with valid credentials', status: 'Passed', priority: 'High', type: 'Functional' },
-    { id: 'TC-002', description: 'Verify user login with invalid credentials', status: 'Passed', priority: 'High', type: 'Functional' },
-    { id: 'TC-003', description: 'Verify password reset functionality', status: 'Failed', priority: 'Medium', type: 'Functional' },
-    { id: 'TC-004', description: 'Verify user registration form validation', status: 'Failed', priority: 'High', type: 'Validation' }
-  ];
+//   // Changed colors to specified values: green #50C878 and red #FF5733
+//   const pieData = [
+//     { name: 'Passed', value: testResults.passed, color: '#50C878' },
+//     { name: 'Failed', value: testResults.failed, color: '#FF5733' }
+//   ];
+
+//   const errors = [
+//     { component: 'Login Form', description: 'Button click event not triggered', severity: 'High' },
+//     { component: 'User Dashboard', description: 'Data not loading in table', severity: 'Medium' },
+//     { component: 'Payment Gateway', description: 'Form validation missing', severity: 'High' }
+//   ];
+  
+  
+//   const testCases = [
+//     { id: 'TC-001', description: 'Verify user login with valid credentials', status: 'Passed', priority: 'High', type: 'Functional' },
+//     { id: 'TC-002', description: 'Verify user login with invalid credentials', status: 'Passed', priority: 'High', type: 'Functional' },
+//     { id: 'TC-003', description: 'Verify password reset functionality', status: 'Failed', priority: 'Medium', type: 'Functional' },
+//     { id: 'TC-004', description: 'Verify user registration form validation', status: 'Failed', priority: 'High', type: 'Validation' }
+//   ];
   
   // Generated test cases that will appear when button is clicked
-  const generatedTestCases = [
-    { id: 'TC-005', description: 'Verify form field validation for special characters in all input fields across application', status: 'New', priority: 'Medium', type: 'Validation' },
-    { id: 'TC-006', description: 'Test login persistence after browser refresh and session timeout scenarios', status: 'New', priority: 'Low', type: 'Functional' },
-    { id: 'TC-007', description: 'Validate error messages for incorrect input formats in payment processing and registration', status: 'New', priority: 'Medium', type: 'Validation' },
-    { id: 'TC-008', description: 'Check responsive layout on mobile devices with various screen sizes', status: 'New', priority: 'High', type: 'UI/UX' }
-  ];
+//   const generatedTestCases = [
+//     { id: 'TC-005', description: 'Verify form field validation for special characters in all input fields across application', status: 'New', priority: 'Medium', type: 'Validation' },
+//     { id: 'TC-006', description: 'Test login persistence after browser refresh and session timeout scenarios', status: 'New', priority: 'Low', type: 'Functional' },
+//     { id: 'TC-007', description: 'Validate error messages for incorrect input formats in payment processing and registration', status: 'New', priority: 'Medium', type: 'Validation' },
+//     { id: 'TC-008', description: 'Check responsive layout on mobile devices with various screen sizes', status: 'New', priority: 'High', type: 'UI/UX' }
+//   ];
+
+useEffect(()=>{
+    const generateTestCases = (tests) => {
+        console.log(tests);
+        return tests.map((test, index) => ({
+          id: `TC-${String(index + 1).padStart(3, "0")}`,
+          description: test.description,
+          status: "High",
+          priority: "High",
+          type: test.type,
+          action : test.action
+        }));
+      };
+      const data3 = generateTestCases(tests)
+
+      setGeneratedTestCases(()=>data3)
+      console.log(generatedTestCases)
+      
+},[tests,showGeneratedTests])
+
   
-  const errors = [
-    { component: 'Login Form', description: 'Button click event not triggered', severity: 'High' },
-    { component: 'User Dashboard', description: 'Data not loading in table', severity: 'Medium' },
-    { component: 'Payment Gateway', description: 'Form validation missing', severity: 'High' }
-  ];
+//   const generatedTestCases = generateTestCases(tests);
+
+//   console.log(generatedTestCases)
+  
   
   const cicdSteps = [
     { name: 'Test Generation', completed: true },
@@ -96,7 +351,7 @@ const TestAutomationDashboard = () => {
     console.log(formData)
 
     try {
-      const response = await axios.post("http://localhost:8000/generate", formData, {
+      const response = await axios.post("http://localhost:8080/generate", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("Response:", response.data);
@@ -107,8 +362,39 @@ const TestAutomationDashboard = () => {
     setShowGeneratedTests(true);
   };
 
+ 
+
+//   const handleFileChange = (event) => {
+//     setFile(event.target.files[0]);
+//   };
+
+   // Handle file drop area click
+   const handleFileAreaClick = () => {
+    fileInputRef.current.click();
+  };
+
+  // Handle file drop
+  const handleDrop = (event) => {
+    event.preventDefault();
+    if (event.dataTransfer.files.length) {
+      const droppedFile = event.dataTransfer.files[0];
+      setFile(droppedFile);
+      setFileName(droppedFile.name);
+    }
+  };
+
+  // Prevent default behavior for drag events
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  // Handle file selection
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setFileName(selectedFile.name);
+    }
   };
 
   // Custom rendering for the pie chart label
@@ -120,12 +406,13 @@ const TestAutomationDashboard = () => {
 
     return (
       <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-        {`${(percent * 100).toFixed(0)}%`}
+   `${(percent * 100).toFixed(0)}%`
       </text>
     );
   };
 
   return (
+    
     <div className="bg-slate-50 p-4 h-screen">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-indigo-800">Test Automation Dashboard</h1>
@@ -134,6 +421,8 @@ const TestAutomationDashboard = () => {
       
       <div className="grid grid-cols-12 gap-4">
         {/* Input Area - Expanded width */}
+       
+        <>
         <Card className="col-span-12 lg:col-span-5 border-indigo-200 shadow-md">
           <CardHeader className="pb-2 bg-indigo-50 rounded-t-lg">
             <CardTitle className="text-indigo-700">Input Test Requirements</CardTitle>
@@ -158,9 +447,34 @@ const TestAutomationDashboard = () => {
                   onChange={(e) => setWebsiteLink(e.target.value)}
                 />
               </div>
-              <div className="border-dashed border-2 border-indigo-300 rounded-md p-4 text-center text-indigo-500 text-sm hover:bg-indigo-50 cursor-pointer">
+              {/* <div className="border-dashed border-2 border-indigo-300 rounded-md p-4 text-center text-indigo-500 text-sm hover:bg-indigo-50 cursor-pointer">
                 Drag & drop files or click to browse
                 
+              </div> */}
+              <div 
+className={`border-dashed border-2 ${fileName ? 'border-indigo-500 bg-indigo-50' : 'border-indigo-300'} rounded-md p-4 text-center hover:bg-indigo-50 cursor-pointer transition-colors duration-200`}                onClick={handleFileAreaClick}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+              >
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileChange} 
+                  className="hidden" 
+                />
+                <div className="flex flex-col items-center justify-center">
+                  <Upload className="h-6 w-6 text-indigo-500 mb-2" />
+                  {!fileName ? (
+                    <div className="text-indigo-500 text-sm">
+                      <p>Drag & drop files or click to browse</p>
+                    </div>
+                  ) : (
+                    <div className="text-indigo-700 text-sm font-medium">
+                      <p>File attached: {fileName}</p>
+                      <p className="text-xs text-indigo-500 mt-1">Click to change file</p>
+                    </div>
+                  )}
+                </div>
               </div>
               <button 
                 className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md w-full transition-colors duration-300"
@@ -171,7 +485,7 @@ const TestAutomationDashboard = () => {
             </div>
             
             {/* Generated Test Cases shown within the input section - Improved layout */}
-            {showGeneratedTests && (
+            {!loading ? (
               <div className="mt-6 border border-indigo-200 rounded-md bg-white shadow-sm">
                 <div className="flex justify-between items-center bg-indigo-50 p-2 rounded-t-md">
                   <div className="text-sm font-medium text-indigo-700">Generated Test Cases</div>
@@ -209,23 +523,41 @@ const TestAutomationDashboard = () => {
                             </span>
                           </td>
                           <td className="px-3 py-2 whitespace-nowrap text-xs">
-                            <button className="text-indigo-600 hover:text-indigo-800">Add</button>
+                            <button className="text-indigo-600 hover:text-indigo-800">{test.action}</button>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                </div>
-                <div className="bg-gray-50 p-2 border-t border-gray-200 rounded-b-md">
+                  {/* <div className="bg-gray-50 p-2 border-t border-gray-200 rounded-b-md">
                   <button className="text-xs text-indigo-600 hover:text-indigo-800">View all in Test Cases tab</button>
+                </div> */}
                 </div>
+                <button 
+                className="bg-indigo-600 hover:bg-indigo-700 text-white  my-2 px-4 py-2 rounded-md w-full transition-colors duration-300"
+                onClick={handleRunTestCases}
+              >
+                Run Test Cases
+              </button>
               </div>
-            )}
+              
+            ) : <div className="overlay-1">
+                <div className="loader-1"></div>
+                <p>Working On Your Request</p>
+              </div>}
           </CardContent>
         </Card>
         
         {/* Tabs Section - Adjusted width */}
         <Card className="col-span-12 lg:col-span-7 border-indigo-200 shadow-md">
+    
+      {showTagline ? <div className="flex items-center justify-center h-screen">
+      {showTagline && (
+        <p className=" text-indigo-800 text-2xl font-semibold  px-4">
+          Enter your prompt or upload a file to get started!
+        </p>
+      )}
+    </div>:
           <CardContent className="p-0">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="w-full justify-start border-b rounded-none px-4 bg-indigo-50">
@@ -236,7 +568,7 @@ const TestAutomationDashboard = () => {
               </TabsList>
               
               <TabsContent value="overview" className="p-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   {/* Test Results Summary Card - Fixed pie chart display */}
                   <Card className="border-indigo-200 shadow-sm">
                     <CardHeader className="pb-2 bg-indigo-50 rounded-t-lg">
@@ -259,7 +591,7 @@ const TestAutomationDashboard = () => {
                                 // label={renderCustomizedLabel}
                               >
                                 {pieData.map((entry, index) => (
-                                  <Cell key={`cell-${index}`} fill={entry.color} />
+                                 <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                               </Pie>
                               <Tooltip formatter={(value, name) => [`${value}`, name]} />
@@ -275,7 +607,7 @@ const TestAutomationDashboard = () => {
                             <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: '#FF5733' }}></div>
                             <span className="text-sm">Failed: {testResults.failed}</span>
                           </div>
-                          <div className="text-sm text-gray-500 mt-1">Coverage: 75%</div>
+                          {/* <div className="text-sm text-gray-500 mt-1">Coverage: 75%</div> */}
                         </div>
                       </div>
                     </CardContent>
@@ -292,7 +624,7 @@ const TestAutomationDashboard = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="border-indigo-200 shadow-sm">
+                  {/* <Card className="border-indigo-200 shadow-sm">
                     <CardHeader className="pb-2 bg-indigo-50 rounded-t-lg">
                       <CardTitle className="text-sm font-medium text-indigo-700">Critical Issues</CardTitle>
                     </CardHeader>
@@ -301,7 +633,7 @@ const TestAutomationDashboard = () => {
                       <div className="text-xs text-gray-500">High priority issues needing attention</div>
                       <button className="mt-2 text-xs text-indigo-600 hover:text-indigo-800">View details</button>
                     </CardContent>
-                  </Card>
+                  </Card> */}
                 </div>
                 
                 {/* Trend Analysis */}
@@ -402,11 +734,11 @@ const TestAutomationDashboard = () => {
                       <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Description</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Status</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Type</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Actions</th>
+                      {/* <th className="px-6 py-3 text-left text-xs font-medium text-indigo-700 uppercase tracking-wider">Actions</th> */}
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {[...testCases, ...(showGeneratedTests ? generatedTestCases : [])].map((test) => (
+                    {[...(testedTestCases ? testedTestCases : [])].map((test) => (
                       <tr key={test.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{test.id}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">
@@ -420,8 +752,8 @@ const TestAutomationDashboard = () => {
                               'bg-gray-100'
                             }`}
                             style={{ 
-                              backgroundColor: test.status === 'Passed' ? 'rgba(80, 200, 120, 0.2)' : 
-                                             test.status === 'Failed' ? 'rgba(255, 87, 51, 0.2)' : 
+                              backgroundColor: test.status === 'PASS' ? 'rgba(80, 200, 120, 0.2)' : 
+                                             test.status === 'FAIL' ? 'rgba(255, 87, 51, 0.2)' : 
                                              'rgba(107, 114, 128, 0.2)',
                               color: test.status === 'Passed' ? '#50C878' : 
                                     test.status === 'Failed' ? '#FF5733' : 
@@ -442,10 +774,13 @@ const TestAutomationDashboard = () => {
                             {test.type}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           <button className="text-indigo-600 hover:text-indigo-900 mr-2">View</button>
                           <button className="text-indigo-600 hover:text-indigo-900">Run</button>
-                        </td>
+                        </td> */}
+                        {/* <td className="px-3 py-2 whitespace-nowrap text-xs">
+                            <button className="text-indigo-600 hover:text-indigo-800">{test.action}</button>
+                        </td> */}
                       </tr>
                     ))}
                   </tbody>
@@ -544,9 +879,10 @@ const TestAutomationDashboard = () => {
                 </div>
               </TabsContent>
             </Tabs>
-          </CardContent>
+          </CardContent>}
         </Card>
-      </div>
+      </>
+   </div>
     </div>
   );
 };

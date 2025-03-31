@@ -1,0 +1,22 @@
+[
+    {
+        "description": "Verify user can click on the 'Search Bus' button with valid details.",
+        "status": "Failed - Element not found"
+    },
+    {
+        "description": "Verify 'Search Bus' button is disabled when no values are selected",
+        "status": "Failed - Element not found"
+    },
+    {
+        "description": "Verify 'Search Bus' button is enabled when valid 'From' and 'To' locations and date are selected.",
+        "status": "Failed - Element not found"
+    },
+    {
+        "description": "Verify error message if 'From' and 'To' locations are same.",
+        "status": "Failed - Element not found"
+    },
+    {
+        "description": "Verify that the 'Search Bus' button is clickable and navigates to the search result page when valid 'From', 'To', and 'Date' are selected.",
+        "status": "Failed - Element not found"
+    }
+]

@@ -1,0 +1,27 @@
+[
+    {
+        "passed": true,
+        "description": "Verify that user can click on the search bar on Flipkart.",
+        "error": null
+    },
+    {
+        "passed": false,
+        "description": "Verify that search bar accepts input of a valid product name and displays suggestion.",
+        "error": "No search suggestions found"
+    },
+    {
+        "passed": true,
+        "description": "Verify that search bar accepts input of a valid product name and redirects to the search results page.",
+        "error": null
+    },
+    {
+        "passed": false,
+        "description": "Verify that search bar accepts input of special characters and displays relevant results.",
+        "error": "Message: "
+    },
+    {
+        "passed": false,
+        "description": "Verify that search bar accepts input of numbers and displays relevant products.",
+        "error": "Message: "
+    }
+]

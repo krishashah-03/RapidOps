@@ -1,0 +1,12 @@
+{
+    
+        "login": 
+            "Users should receive an error message in login form if they enter incorrect credentials."
+        ,
+        "search": 
+            "The search functionality should display relevant products."
+        ,
+        "cart": 
+            "Cart should not contain more than 100 items."
+
+}

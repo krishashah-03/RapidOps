@@ -1,0 +1,18 @@
+[
+    {
+      "description": "Verify user can click the search bar",
+      "action": "click",
+      "xpath": "//fake_xpath",
+      "expected": "no_error",
+      "timeout": 5
+    },
+    {
+      "description": "Verify search bar accepts input",
+      "action": "send_keys",
+      "xpath": "//fake_xpath",
+      "input": "iPhone 14",
+      "expected": "search_suggestions",
+      "timeout": 5
+    }
+  ]
+  

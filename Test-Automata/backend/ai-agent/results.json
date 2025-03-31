@@ -1,0 +1,30 @@
+[
+    {
+        "test": "Verify that the search input field is clickable.",
+        "status": "FAIL",
+        "error": "Message: element not interactable\n  (Session info: chrome=134.0.6998.178)\nStacktrace:\n\tGetHandleVerifier [0x00007FF608894C25+3179557]\n\t(No symbol) [0x00007FF6084F88A0]\n\t(No symbol) [0x00007FF608388FFC]\n\t(No symbol) [0x00007FF6083E0EA4]\n\t(No symbol) [0x00007FF6083D2A24]\n\t(No symbol) [0x00007FF608407C2A]\n\t(No symbol) [0x00007FF6083D22D6]\n\t(No symbol) [0x00007FF608407E40]\n\t(No symbol) [0x00007FF6084302F3]\n\t(No symbol) [0x00007FF608407A03]\n\t(No symbol) [0x00007FF6083D06D0]\n\t(No symbol) [0x00007FF6083D1983]\n\tGetHandleVerifier [0x00007FF6088F67CD+3579853]\n\tGetHandleVerifier [0x00007FF60890D1D2+3672530]\n\tGetHandleVerifier [0x00007FF608902153+3627347]\n\tGetHandleVerifier [0x00007FF60866092A+868650]\n\t(No symbol) [0x00007FF608502FFF]\n\t(No symbol) [0x00007FF6084FF4A4]\n\t(No symbol) [0x00007FF6084FF646]\n\t(No symbol) [0x00007FF6084EEAA9]\n\tBaseThreadInitThunk [0x00007FF8A481E8D7+23]\n\tRtlUserThreadStart [0x00007FF8A695BF6C+44]\n",
+        "expected": "no_error"
+    },
+    {
+        "test": "Verify that user can type text to search input",
+        "status": "FAIL",
+        "error": "Message: element not interactable\n  (Session info: chrome=134.0.6998.178)\nStacktrace:\n\tGetHandleVerifier [0x00007FF608894C25+3179557]\n\t(No symbol) [0x00007FF6084F88A0]\n\t(No symbol) [0x00007FF608388FFC]\n\t(No symbol) [0x00007FF6083D9274]\n\t(No symbol) [0x00007FF6083D72BC]\n\t(No symbol) [0x00007FF608407C2A]\n\t(No symbol) [0x00007FF6083D22D6]\n\t(No symbol) [0x00007FF608407E40]\n\t(No symbol) [0x00007FF6084302F3]\n\t(No symbol) [0x00007FF608407A03]\n\t(No symbol) [0x00007FF6083D06D0]\n\t(No symbol) [0x00007FF6083D1983]\n\tGetHandleVerifier [0x00007FF6088F67CD+3579853]\n\tGetHandleVerifier [0x00007FF60890D1D2+3672530]\n\tGetHandleVerifier [0x00007FF608902153+3627347]\n\tGetHandleVerifier [0x00007FF60866092A+868650]\n\t(No symbol) [0x00007FF608502FFF]\n\t(No symbol) [0x00007FF6084FF4A4]\n\t(No symbol) [0x00007FF6084FF646]\n\t(No symbol) [0x00007FF6084EEAA9]\n\tBaseThreadInitThunk [0x00007FF8A481E8D7+23]\n\tRtlUserThreadStart [0x00007FF8A695BF6C+44]\n",
+        "expected": "Mumbai"
+    },
+    {
+        "test": "Verify the functionality of the 'Stays' button in the search bar.",
+        "status": "PASS",
+        "expected": "no_error"
+    },
+    {
+        "test": "Verify the functionality of the 'Experiences' button in the search bar.",
+        "status": "PASS",
+        "expected": "no_error"
+    },
+    {
+        "test": "Verify clear the text of input to search input",
+        "status": "FAIL",
+        "error": "Message: \nStacktrace:\n\tGetHandleVerifier [0x00007FF608894C25+3179557]\n\t(No symbol) [0x00007FF6084F88A0]\n\t(No symbol) [0x00007FF6083891CA]\n\t(No symbol) [0x00007FF6083DFA67]\n\t(No symbol) [0x00007FF6083DFC9C]\n\t(No symbol) [0x00007FF608433627]\n\t(No symbol) [0x00007FF608407C6F]\n\t(No symbol) [0x00007FF6084302F3]\n\t(No symbol) [0x00007FF608407A03]\n\t(No symbol) [0x00007FF6083D06D0]\n\t(No symbol) [0x00007FF6083D1983]\n\tGetHandleVerifier [0x00007FF6088F67CD+3579853]\n\tGetHandleVerifier [0x00007FF60890D1D2+3672530]\n\tGetHandleVerifier [0x00007FF608902153+3627347]\n\tGetHandleVerifier [0x00007FF60866092A+868650]\n\t(No symbol) [0x00007FF608502FFF]\n\t(No symbol) [0x00007FF6084FF4A4]\n\t(No symbol) [0x00007FF6084FF646]\n\t(No symbol) [0x00007FF6084EEAA9]\n\tBaseThreadInitThunk [0x00007FF8A481E8D7+23]\n\tRtlUserThreadStart [0x00007FF8A695BF6C+44]\n",
+        "expected": ""
+    }
+]
